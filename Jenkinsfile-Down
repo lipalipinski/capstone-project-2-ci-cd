@@ -6,6 +6,11 @@ pipeline {
     }
 
     stages {
+        stage('tf init') {
+            steps {
+                sh "terraform -chdir=tf-provision init"
+            }
+        }
         stage('tf destroy') {
             steps {
                 sh "terraform -chdir=tf-provision destroy -auto-approve"
