@@ -4,12 +4,12 @@ pipeline {
     stages {
         stage('tf init') {
             steps {
-                terraform -chdir=tf-provision init
+                sh "terraform -chdir=tf-provision init"
             }
         }
         stage('tf apply') {
             steps {
-                terraform -chdir=tf-provision -auto-approve apply
+                sh "terraform -chdir=tf-provision -auto-approve apply"
             }
         }
     }
