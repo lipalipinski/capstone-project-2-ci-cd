@@ -1,3 +1,3 @@
 output "VPC_id" {
-  value = data.aws_vpcs.app_vpc.ids
+  value = data.aws_vpcs.app-vpc.ids
 }
