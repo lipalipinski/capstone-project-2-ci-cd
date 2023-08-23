@@ -9,7 +9,7 @@ pipeline {
         }
         stage('tf apply') {
             steps {
-                sh "terraform -chdir=tf-provision -auto-approve apply"
+                sh "terraform -chdir=tf-provision apply -auto-approve"
             }
         }
     }
