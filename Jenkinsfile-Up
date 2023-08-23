@@ -2,9 +2,14 @@ pipeline {
     agent {label 'ec2'}
 
     stages {
-        stage('Hello') {
+        stage('tf init') {
             steps {
-                echo 'Hello World'
+                terraform -chdir=tf-provision init
+            }
+        }
+        stage('tf apply') {
+            steps {
+                terraform -chdir=tf-provision -auto-approve apply
             }
         }
     }
