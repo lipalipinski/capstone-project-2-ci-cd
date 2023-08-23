@@ -7,7 +7,7 @@ module "app-server-1" {
   instance_type = "t3.small"
   ami           = var.server-ami
   monitoring    = true
-  subnet_id     = data.aws_subnets.private
+  subnet_id     = data.aws_subnets.private.id
 
   tags = {
     Name  = "app_server_1"
