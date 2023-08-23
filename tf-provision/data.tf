@@ -7,7 +7,7 @@ data "aws_vpcs" "app-vpc" {
 data "aws_subnets" "private" {
   filter {
     name   = "vpc-id"
-    values = [data.aws_vpcs.app-vpc.vpc_id]
+    values = [data.aws_vpcs.app-vpc.id]
   }
 
   tags = {
