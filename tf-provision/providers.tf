@@ -6,7 +6,7 @@ terraform {
   }
   backend "s3" {
     bucket            = "tf-backend-jlipinski-1"
-    key               = "tf/petclinic-app"
+    key               = "tf/petclinic-app/terraform.tfstate"
     region            = "eu-central-1"
     dynamodb_endpoint = "dynamodb.eu-central-1.amazonaws.com"
     dynamodb_table    = "tf-lock-jlipinski-1"
