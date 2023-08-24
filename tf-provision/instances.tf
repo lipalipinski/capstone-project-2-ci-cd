@@ -14,6 +14,7 @@ module "app-server-1" {
 
   user_data_replace_on_change = true
   user_data = <<EOF
+  #!/bin/bash
   apt-get update -y && apt-get upgrade -y
   apt-get install -y apache2
 EOF
