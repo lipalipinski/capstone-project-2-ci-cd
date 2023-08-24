@@ -17,7 +17,7 @@ resource "aws_security_group" "app_server_sg" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [aws_security_group.jenkins-ctrl-sg.id]
+    security_groups = ["sg-0603d022a56af83aa"]
   }
 }
 

@@ -4,7 +4,7 @@ module "app-server-1" {
 
   name = "app_server_1"
 
-  key_name = module.jenkins-worker-kp.key_pair_name
+  key_name = "jenkins-worker-kp"
 
   instance_type = "t3.small"
   ami           = var.server-ami
