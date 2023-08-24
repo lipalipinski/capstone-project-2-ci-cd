@@ -12,11 +12,11 @@ module "app-alb" {
   target_groups = [
     {
       name             = "petclinic-tg"
-      backend_protocol = "TCP"
+      backend_protocol = "HTTP"
       backend_port     = 80
       health_check = {
         enabled             = true
-        protocol            = "TCP"
+        protocol            = "HTTP"
         interval            = 5
         timeout             = 3
         healthy_threshold   = 2
