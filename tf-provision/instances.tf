@@ -16,6 +16,9 @@ module "app-server-1" {
   user_data                   = <<EOF
 #!/bin/bash
 
+sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' \
+  /etc/needrestart/needrestart.conf
+  
 apt-get update -y && apt-get upgrade -y
 apt-get install -y apache2
 EOF

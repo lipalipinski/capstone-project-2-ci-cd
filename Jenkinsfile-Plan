@@ -1,0 +1,20 @@
+pipeline {
+    agent {label 'ec2'}
+
+    environment {
+        TF_CLI_ARGS="-no-color"
+    }
+
+    stages {
+        stage('tf init') {
+            steps {
+                sh "terraform -chdir=tf-provision init"
+            }
+        }
+        stage('tf apply') {
+            steps {
+                sh "terraform -chdir=tf-provision plan"
+            }
+        }
+    }
+}
