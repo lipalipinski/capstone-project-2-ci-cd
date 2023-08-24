@@ -13,7 +13,7 @@ resource "aws_security_group" "app_server_sg" {
 }
 
 resource "aws_security_group" "app_lb_sg" {
-  name = "app_server_sg"
+  name = "app_lb_sg"
   description = "SG for Petclinic Load Balancer"
   vpc_id = data.aws_vpcs.app-vpc.ids[0]
 
