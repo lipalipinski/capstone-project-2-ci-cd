@@ -8,19 +8,11 @@ resource "aws_security_group" "app_server_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    # security_groups = [aws_security_group.app_lb_sg.id]
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.app_lb_sg.id]
+    # cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    description     = "Allow 22 from jenkins-ctrl-sg"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    security_groups = ["sg-0603d022a56af83aa"]
-  }
-
-    egress {
+  egress {
     description = "Allow outbound connection"
     from_port   = 0
     to_port     = 0
