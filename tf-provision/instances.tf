@@ -9,6 +9,7 @@ module "app-server-1" {
   monitoring    = true
   subnet_id     = data.aws_subnets.private.ids[0]
 
+  user_data_replace_on_change = true
   user_data = <<EOF
   apt-get update -y && apt-get upgrade -y
   apt-get install -y apache2
