@@ -6,8 +6,8 @@ module "app-alb" {
 
   load_balancer_type = "application"
 
-  vpc_id = data.aws_vpcs.app-vpc.ids[0]
-  subnets = data.aws_subnets.public.ids
+  vpc_id          = data.aws_vpcs.app-vpc.ids[0]
+  subnets         = data.aws_subnets.public.ids
   security_groups = [aws_security_group.app_lb_sg.id]
 
   target_groups = [
@@ -23,12 +23,12 @@ module "app-alb" {
         healthy_threshold   = 2
         unhealthy_threshold = 2
       }
-      target_type      = "instance"
+      target_type = "instance"
       targets = [
         {
           port      = 80
           target_id = module.app-server-1.id
-        }, 
+        },
       ]
     }
   ]
