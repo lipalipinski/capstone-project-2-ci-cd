@@ -4,6 +4,8 @@ module "app-server-1" {
 
   name = "app_server_1"
 
+  key_name = module.jenkins-worker-kp.key_pair_name
+
   instance_type = "t3.small"
   ami           = var.server-ami
   monitoring    = true

@@ -11,6 +11,14 @@ resource "aws_security_group" "app_server_sg" {
     # security_groups = [aws_security_group.app_lb_sg.id]
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    description     = "Allow 22 from jenkins-ctrl-sg"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [aws_security_group.jenkins-ctrl-sg.id]
+  }
 }
 
 resource "aws_security_group" "app_lb_sg" {
