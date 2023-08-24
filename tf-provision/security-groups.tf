@@ -19,6 +19,14 @@ resource "aws_security_group" "app_server_sg" {
     protocol        = "tcp"
     security_groups = ["sg-0603d022a56af83aa"]
   }
+
+    egress {
+    description = "Allow outbound connection"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_security_group" "app_lb_sg" {
