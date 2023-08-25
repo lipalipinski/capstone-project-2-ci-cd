@@ -6,12 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('create server kp') {
-            steps {
-               echo "Creating app-server key pair..."
-               sh 'ssh-keygen -f tf-provision/app-server-kp -t rsa -q -N ""' 
-            }
-        }
         stage('tf init') {
             steps {
                 sh "terraform -chdir=tf-provision init"
@@ -21,11 +15,6 @@ pipeline {
             steps {
                 sh "terraform -chdir=tf-provision apply -auto-approve"
             }
-        }
-    }
-    post {
-        always{
-            sh 'rm -fv tf-provision/app-server-kp*'
         }
     }
 }

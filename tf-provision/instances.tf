@@ -3,7 +3,7 @@ module "app-server-1" {
   version = "5.2.1"
 
   name = "app_server_1"
-  key_name = module.app-server-kp.key_pair_name
+  key_name = "app-server-kp"
 
   instance_type          = "t3.small"
   ami                    = var.server-ami
@@ -25,17 +25,5 @@ EOF
   tags = {
     Name  = "app_server_1"
     Group = "app_server"
-  }
-}
-
-module "app-server-kp" {
-  source  = "terraform-aws-modules/key-pair/aws"
-  version = "2.0.2"
-
-  key_name   = "app-server-kp"
-  public_key = file("app-server-kp.pub")
-
-  tags = {
-    Name = "app-server-kp"
   }
 }
