@@ -9,7 +9,7 @@ pipeline {
         stage('create server kp') {
             steps {
                echo "Creating app-server key pair..."
-               sh 'ssh-keygen -f app-server-kp -t rsa -q -N ""' 
+               sh 'ssh-keygen -f tf-provision/app-server-kp -t rsa -q -N ""' 
             }
         }
         stage('tf init') {
@@ -25,7 +25,7 @@ pipeline {
     }
     post {
         always{
-            sh 'rm -fv app-server-kp app-server-kp.pub'
+            sh 'rm -fv tf-provision/app-server-kp*'
         }
     }
 }
