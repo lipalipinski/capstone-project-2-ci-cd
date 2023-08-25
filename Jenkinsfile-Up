@@ -22,11 +22,11 @@ pipeline {
                 sh "terraform -chdir=tf-provision apply -auto-approve"
             }
         }
-        stage('destroy server kp') {
-            steps {
-               sh 'rm -f app-server-kp app-server-kp.pub'
-               sh 'ls -la'
-            }
+    }
+    post {
+        always{
+            sh 'rm -f app-server-kp app-server-kp.pub'
+            sh 'ls -la'
         }
     }
 }
