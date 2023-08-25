@@ -8,8 +8,8 @@ pipeline {
     stages {
         stage('create server kp') {
             steps {
+               echo "Creating app-server key pair..."
                sh 'ssh-keygen -f app-server-kp -t rsa -q -N ""' 
-               sh 'ls -la'
             }
         }
         stage('tf init') {
@@ -25,8 +25,7 @@ pipeline {
     }
     post {
         always{
-            sh 'rm -f app-server-kp app-server-kp.pub'
-            sh 'ls -la'
+            sh 'rm -fv app-server-kp app-server-kp.pub'
         }
     }
 }
