@@ -8,7 +8,7 @@ resource "aws_security_group" "app_server_sg" {
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [data.aws_security_groups.jenkins-worker-sg.id]
+    security_groups = [data.aws_security_groups.jenkins-worker-sg.ids[0]]
   }
 
   ingress {
