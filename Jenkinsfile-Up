@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('create server kp') {
+            steps {
+               sh 'ssh-keygen -f app-server-kp -t rsa -q -N ""' 
+               sh 'll'
+            }
+        }
         stage('tf init') {
             steps {
                 sh "terraform -chdir=tf-provision init"
@@ -14,6 +20,12 @@ pipeline {
         stage('tf apply') {
             steps {
                 sh "terraform -chdir=tf-provision apply -auto-approve"
+            }
+        }
+        stage('destroy server kp') {
+            steps {
+               sh 'rm -f app-server-kp app-server-kp.pub'
+               sh 'll'
             }
         }
     }
