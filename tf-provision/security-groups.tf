@@ -4,6 +4,14 @@ resource "aws_security_group" "app_server_sg" {
   vpc_id      = data.aws_vpcs.app-vpc.ids[0]
 
   ingress {
+    description     = "Allow 22 from jenkins-ctrl-sg"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
+    security_groups = [data.aws_security_groups.jenkins-worker-sg.id]
+  }
+
+  ingress {
     description = "Allow 80 from anywhere"
     from_port   = 80
     to_port     = 80

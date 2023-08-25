@@ -25,3 +25,10 @@ data "aws_subnets" "private" {
     Tier = "private"
   }
 }
+
+data "aws_security_groups" "jenkins-worker-sg" {
+  tags = {
+    Name = "jenkins-worker-sg"
+    Owner = "jlipinski"
+  }
+}
