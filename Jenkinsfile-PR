@@ -36,7 +36,7 @@ pipeline {
                 }
                 // set custom build name
                 script {
-                    currentBuild.displayName = "#" + currentBuild.number + ":${env.GIT_LOCAL_BRANCH}-${env.SHORT_COMMIT_HASH}"
+                    currentBuild.displayName = "#" + currentBuild.number + ":${env.BRANCH_NAME}-${env.SHORT_COMMIT_HASH}"
                 }
             }
         }
