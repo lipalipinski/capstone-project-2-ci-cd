@@ -49,7 +49,7 @@ pipeline {
          stage('test app') {
             steps {
                 echo "Building..."
-                sh "mvn --batch-mode clean test"
+                sh "mvn --batch-mode clean package"
             }
         }
         stage('build container') {
