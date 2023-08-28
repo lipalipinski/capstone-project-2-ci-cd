@@ -28,6 +28,16 @@ pipeline {
                     // CI repo URL from var set by emote Jenkinsfile Provider plugin
                     userRemoteConfigs: [[url: "${env.RJPP_SCM_URL}"]]
                 )
+                script {
+                  env.SHORT_COMMIT_HASH=sh(
+                        returnStdout: true, 
+                        script: 'git rev-parse --short HEAD'
+                    ).trim()
+                  env.AWS_ID=sh(
+                        returnStdout: true, 
+                        script: 'aws sts get-caller-identity --query "Account" --output text'
+                    ).trim()
+                }
                 // set custom build name
                 /* script {
                     def pom = readMavenPom()
@@ -45,11 +55,17 @@ pipeline {
         stage('build container') {
             steps {
               echo "Building docker container..."
+              sh "docker build -t jlipinski-petclinic:$SHORT_COMMIT_HASH ."
             }
         }
         stage('push container') {
             steps {
+              echo "Docker login to ECR..."
+              sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com"
+              echo "Tagging the image..."
+              sh "docker tag jlipinski-petclinic:$SHORT_COMMIT_HASH $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
               echo "Pushing container to ECR..."
+              sh "docker push $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
             }
         }
     }
