@@ -33,17 +33,11 @@ pipeline {
                         returnStdout: true, 
                         script: 'git rev-parse --short HEAD'
                     ).trim()
-                  env.AWS_ID=sh(
-                        returnStdout: true, 
-                        script: 'aws sts get-caller-identity --query "Account" --output text'
-                    ).trim()
                 }
                 // set custom build name
-                /* script {
-                    def pom = readMavenPom()
-                    env.VERSION = pom.getVersion()
-                    currentBuild.displayName = "#" + currentBuild.number + " ${env.VERSION}"
-                }*/
+                script {
+                    currentBuild.displayName = "#" + currentBuild.number + " ${env.SHORT_COMMIT_HASH}"
+                }
             }
         }
          stage('test app') {
@@ -58,16 +52,6 @@ pipeline {
               sh "docker build -q -t jlipinski-petclinic:$SHORT_COMMIT_HASH ."
             }
         }
-        /*stage('push container') {
-            steps {
-              echo "Docker login to ECR..."
-              sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com"
-              echo "Tagging the image..."
-              sh "docker tag jlipinski-petclinic:$SHORT_COMMIT_HASH ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
-              echo "Pushing container to ECR..."
-              sh "docker push -q ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
-            }
-        }*/
         stage('push container') {
             steps {
               withAWSParameterStore(credentialsId: '', naming: 'basename', path: '/jlipinski', recursive: true, regionName: 'eu-central-1') {
