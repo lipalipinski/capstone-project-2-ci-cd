@@ -55,17 +55,17 @@ pipeline {
         stage('build container') {
             steps {
               echo "Building docker container..."
-              sh "docker build -t jlipinski-petclinic:$SHORT_COMMIT_HASH ."
+              sh "docker build -q -t jlipinski-petclinic:$SHORT_COMMIT_HASH ."
             }
         }
         stage('push container') {
             steps {
               echo "Docker login to ECR..."
-              sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com"
+              sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com"
               echo "Tagging the image..."
-              sh "docker tag jlipinski-petclinic:$SHORT_COMMIT_HASH $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
+              sh "docker tag jlipinski-petclinic:$SHORT_COMMIT_HASH ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
               echo "Pushing container to ECR..."
-              sh "docker push $AWS_ID\.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
+              sh "docker push -q ${env.AWS_ID}.dkr.ecr.eu-central-1.amazonaws.com/jlipinski-petclinic:$SHORT_COMMIT_HASH"
             }
         }
     }
