@@ -5,6 +5,8 @@ pipeline {
         TF_CLI_ARGS="-no-color"
     }
 
+    def app_server_ip
+
     stages {
         stage('tf init') {
             steps {
@@ -14,6 +16,15 @@ pipeline {
         stage('tf apply') {
             steps {
                 sh "terraform -chdir=tf-provision apply -auto-approve"
+            }
+        }
+        stage('test docker') {
+            steps {
+                app_server_ip = sh(
+                        returnStdout: true, 
+                        script: 'terraform output AppServerIp'
+                    ).trim()
+                sh "./scripts/check-site.sh ${app_server_ip}"
             }
         }
     }
