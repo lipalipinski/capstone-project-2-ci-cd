@@ -28,7 +28,7 @@ data "aws_subnets" "private" {
 
 data "aws_security_groups" "jenkins-worker-sg" {
   filter {
-      name   = "group-name"
-      values = ["jenkins-worker-sg"]
-    }
+    name   = "group-name"
+    values = ["jenkins-worker-sg"]
+  }
 }
