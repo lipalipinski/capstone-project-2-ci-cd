@@ -14,12 +14,7 @@ module "app-server-1" {
   user_data_replace_on_change = true
   user_data                   = <<EOF
 #!/bin/bash
-
-sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' \
-  /etc/needrestart/needrestart.conf
-  
-apt-get update -y && apt-get upgrade -y
-apt-get install -y apache2
+${file("files/app-server-boot.sh")}
 EOF
 
   tags = {
