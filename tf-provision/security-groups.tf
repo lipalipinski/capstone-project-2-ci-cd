@@ -12,13 +12,24 @@ resource "aws_security_group" "app_server_sg" {
   }
 
   ingress {
-    description = "Allow 80 from ALB SG and jenkin worker SG"
+    description = "Allow 80 from ALB SG"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     security_groups = [
       aws_security_group.app_lb_sg.id,
-      data.aws_security_groups.jenkins-worker-sg.ids[0]]
+      ]
+    # cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow 8080 from jenkin worker SG"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    security_groups = [
+      data.aws_security_groups.jenkins-worker-sg.ids[0],
+      ]
     # cidr_blocks = ["0.0.0.0/0"]
   }
 
