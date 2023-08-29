@@ -51,4 +51,4 @@ sudo apt-get install -y \
   groupadd docker
   usermod -aG docker ubuntu
 
-  docker run -d --name apache2-container -e TZ=UTC -p 8080:80 ubuntu/apache2:2.4-22.04_beta
+  docker run -d -e TZ=UTC -p 8080:80 ubuntu/apache2:2.4-22.04_beta
