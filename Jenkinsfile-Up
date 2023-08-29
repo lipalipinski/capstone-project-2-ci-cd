@@ -1,3 +1,4 @@
+def app_server_ip
 pipeline {
     agent {label 'ec2'}
 
@@ -17,14 +18,15 @@ pipeline {
                 sh "terraform -chdir=tf-provision apply -auto-approve"
             }
         }
-        def app_server_ip
         stage('test docker') {
             steps {
+                script {
                 app_server_ip = sh(
-                        returnStdout: true, 
-                        script: 'terraform output AppServerIp'
-                    ).trim()
+                    returnStdout: true, 
+                    script: 'terraform output AppServerIp'
+                ).trim()
                 sh "./scripts/check-site.sh ${app_server_ip}"
+                }
             }
         }
     }
