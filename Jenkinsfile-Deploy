@@ -33,10 +33,11 @@ pipeline {
             steps {
               withAWSParameterStore(credentialsId: '', naming: 'basename', path: '/jlipinski', recursive: true, regionName: 'eu-central-1') {
                 script {
-                  sh "ssh -i ${env.APP_SERVER_KEY} ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${env.ECR_REGISTRY_URL}'"
-                  sh "scp -i ${env.APP_SERVER_KEY} tf-provision/files/deploy-app.sh ${env.APP_SERVER_KEY_USR}@${app_server_ip}:/home/ubuntu/"
-                  sh "ssh -i ${env.APP_SERVER_KEY} ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'sudo chmod 755 /home/ubuntu/deploy-app.sh'"
-                  sh "ssh -i ${env.APP_SERVER_KEY} ${env.APP_SERVER_KEY_USR}@${app_server_ip} '/home/ubuntu/deploy-app.sh'"
+                  //sh "cp ${env.APP_SERVER_KEY} app-server-key && sudo chmod 400 app-server-key"
+                  sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${env.ECR_REGISTRY_URL}'"
+                  sh "scp -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no tf-provision/files/deploy-app.sh ${env.APP_SERVER_KEY_USR}@${app_server_ip}:/home/ubuntu/"
+                  sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'sudo chmod 755 /home/ubuntu/deploy-app.sh'"
+                  sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} '/home/ubuntu/deploy-app.sh'"
                 }
               }
             }
