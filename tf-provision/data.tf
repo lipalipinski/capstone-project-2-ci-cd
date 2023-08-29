@@ -1,5 +1,5 @@
-data "aws_iam_policy" "example" {
-  name = "test_policy"
+data "aws_iam_policy" "get_ecr_token" {
+  name = "get_ecr_token"
 }
 
 data "aws_security_groups" "jenkins-worker-sg" {
