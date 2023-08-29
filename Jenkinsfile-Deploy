@@ -1,0 +1,52 @@
+def app_server_ip
+def app_alb_address
+pipeline {
+    agent {label 'ec2'}
+
+    environment {
+        TF_CLI_ARGS="-no-color"
+        APP_SERVER_KEY = credentials('app-server-pk')
+    }
+
+
+    stages {
+        stage('get server ip') {
+            steps {
+                script{
+
+                  sh "terraform -chdir=tf-provision init"
+
+                  app_server_ip = sh(
+                      returnStdout: true, 
+                      script: 'terraform -chdir=tf-provision output -raw AppServerIp'
+                  ).trim()
+
+                  app_alb_address = sh(
+                      returnStdout: true, 
+                      script: 'terraform -chdir=tf-provision output -raw AppLBAddress'
+                  ).trim()
+
+                }
+            }
+        }
+        stage('run app on server') {
+            steps {
+              withAWSParameterStore(credentialsId: '', naming: 'basename', path: '/jlipinski', recursive: true, regionName: 'eu-central-1') {
+                script {
+                  //sh "ssh -i $APP_SERVER_KEY ubuntu@${app_server_ip} 'aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $ECR_REGISTRY_URL'"
+                  sh "scp -i $APP_SERVER_KEY ubuntu@${app_server_ip} tf-provision/files/deploy-app.sh /home/ubuntu/"
+                  sh "ssh -i $APP_SERVER_KEY ubuntu@${app_server_ip} 'sudo chmod 755 /home/ubuntu/deploy-app.sh'"
+                  sh "ssh -i $APP_SERVER_KEY ubuntu@${app_server_ip} './home/ubuntu/deploy-app.sh'"
+                }
+              }
+            }
+        }
+        stage('test app') {
+            steps {
+                script {
+                sh "./tf-provision/files/check-server.sh ${app_alb_address}"
+                }
+            }
+        }
+    }
+}
