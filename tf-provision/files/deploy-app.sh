@@ -9,4 +9,4 @@ aws ecr get-login-password --region eu-central-1 \
 # stop any containers
 docker stop $(docker ps -aq)
 
-docker run -d -e TZ=UTC -p 80:80 jlipinski-petclinic:$APP_TAG
+docker run -d -e TZ=UTC -p 80:80 $ECR_REGISTRY_URL\jlipinski-petclinic:$APP_TAG
