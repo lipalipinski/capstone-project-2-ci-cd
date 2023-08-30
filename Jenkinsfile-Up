@@ -25,7 +25,7 @@ pipeline {
                     returnStdout: true, 
                     script: 'terraform -chdir=tf-provision output -raw AppServerIp'
                 ).trim()
-                sh "./tf-provision/files/check-server.sh ${app_server_ip}:8080"
+                sh "./tf-provision/files/check-server.sh ${app_server_ip}:80 ${app_server_ip}:8080"
                 }
             }
         }
