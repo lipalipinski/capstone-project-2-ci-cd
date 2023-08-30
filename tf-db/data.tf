@@ -26,3 +26,14 @@ data "aws_subnets" "public" {
     Tier = "public"
   }
 }
+
+data "aws_security_groups" "app-server-sg" {
+  filter {
+    name   = "group-name"
+    values = ["app_server_sg"]
+  }
+}
+
+data "aws_db_subnet_group" "database" {
+  name = "petclinic-jlipinski"
+}
