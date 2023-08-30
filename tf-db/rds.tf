@@ -4,8 +4,8 @@ module "rds" {
 
   identifier = "jlipinski-petclinic-db"
 
-  database_subnet_group_name = data.aws_db_subnet_group.database
-  vpc_security_group_ids     = [aws_security_group.db-sg.id]
+  db_subnet_group_name   = data.aws_db_subnet_group.database
+  vpc_security_group_ids = [aws_security_group.db-sg.id]
 
   engine               = "mysql"
   engine_version       = "8.0"
