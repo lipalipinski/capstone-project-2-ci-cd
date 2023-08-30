@@ -10,7 +10,7 @@ module "app-server-1" {
   ami                    = var.server-ami
   monitoring             = true
   subnet_id              = data.aws_subnets.private.ids[0]
-  vpc_security_group_ids = [data.aws_security_group.app-server-sg.id]
+  vpc_security_group_ids = [data.aws_security_groups.app-server-sg.ids[0]]
 
   user_data_replace_on_change = true
   user_data                   = <<EOF
