@@ -27,13 +27,9 @@ data "aws_subnets" "public" {
   }
 }
 
-data "aws_security_groups" "app-server-sg" {
+data "aws_security_groups" "jenkins-worker-sg" {
   filter {
     name   = "group-name"
-    values = ["app_server_sg"]
+    values = ["jenkins-worker-sg"]
   }
-}
-
-data "aws_db_subnet_group" "database" {
-  name = "petclinic-jlipinski"
 }

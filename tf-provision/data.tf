@@ -2,10 +2,17 @@ data "aws_iam_policy" "get_ecr_token" {
   name = "get_ecr_token"
 }
 
-data "aws_security_groups" "jenkins-worker-sg" {
+data "aws_security_groups" "app-lb-sg" {
   filter {
     name   = "group-name"
-    values = ["jenkins-worker-sg"]
+    values = ["app_lb_sg"]
+  }
+}
+
+data "aws_security_groups" "app-server-sg" {
+  filter {
+    name   = "group-name"
+    values = ["app_server_sg"]
   }
 }
 

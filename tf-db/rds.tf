@@ -4,7 +4,7 @@ module "rds" {
 
   identifier = "jlipinski-petclinic-db"
 
-  db_subnet_group_name   = data.aws_db_subnet_group.database
+  db_subnet_group_name   = "petclinic-jlipinski"
   vpc_security_group_ids = [aws_security_group.db-sg.id]
 
   engine               = "mysql"
