@@ -30,6 +30,11 @@ resource "aws_iam_role" "app-server" {
   }
 }
 
+resource "aws_iam_role_policy_attachment" "app-runner-ecr" {
+  role       = aws_iam_role.app-server.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
+}
+
 resource "aws_iam_role_policy_attachment" "app-server-ecr-token" {
   role       = aws_iam_role.app-server.name
   policy_arn = data.aws_iam_policy.get_ecr_token.arn
