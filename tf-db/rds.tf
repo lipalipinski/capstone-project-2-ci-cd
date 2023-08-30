@@ -16,8 +16,8 @@ module "rds" {
   allocated_storage = 20
 
 
-  db_name                     = "petclinic-db"
-  username                    = "petclinic-admin"
+  db_name                     = "petclinic"
+  username                    = "admin"
   manage_master_user_password = true
   port                        = 3306
 
