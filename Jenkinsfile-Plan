@@ -13,7 +13,7 @@ pipeline {
         }
         stage('tf db apply') {
             steps {
-                sh "terraform -chdir=tf-db plan -auto-approve"
+                sh "terraform -chdir=tf-db plan"
             }
         }
         stage('tf init') {
