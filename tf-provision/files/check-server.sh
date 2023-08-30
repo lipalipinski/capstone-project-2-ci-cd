@@ -12,6 +12,7 @@ do
     resp=$(curl -s -I "$url" | grep "HTTP/1.1")
     if [[ $resp == *"200"* ]]
     then
+      echo "$url"
       echo "$resp"
       exit 0
     fi
