@@ -18,6 +18,7 @@ resource "aws_security_group" "app_server_sg" {
     protocol    = "tcp"
     security_groups = [
       aws_security_group.app_lb_sg.id,
+      data.aws_security_groups.jenkins-worker-sg.ids[0],
     ]
     # cidr_blocks = ["0.0.0.0/0"]
   }
