@@ -66,7 +66,7 @@ resource "aws_security_group" "app_server_sg" {
 }
 
 resource "aws_security_group" "db-sg" {
-  name        = "app_lb_sg"
+  name        = "db-sg"
   description = "SG for Petclinic RDS DB"
   vpc_id      = data.aws_vpcs.app-vpc.ids[0]
 
