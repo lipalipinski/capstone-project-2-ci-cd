@@ -52,6 +52,7 @@ pipeline {
             steps {
                 script {
                 sh "./tf-provision/files/check-server.sh ${app_alb_address}"
+                echo "Application Load Balancer address: ${app_alb_address}"
                 }
             }
         }
