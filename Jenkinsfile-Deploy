@@ -17,6 +17,11 @@ pipeline {
             steps {
                 script{
 
+                // set custom build name
+                script {
+                    currentBuild.displayName = "#" + currentBuild.number + "-" + params.APP_TAG
+                }
+
                   sh "terraform -chdir=tf-provision init"
 
                   app_server_ip = sh(
