@@ -75,6 +75,6 @@ resource "aws_security_group" "db-sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    security_groups = [data.aws_security_groups.app-server-sg.ids[0]]
+    security_groups = [aws_security_groups.app_server_sg.ids[0]]
   }
 }
