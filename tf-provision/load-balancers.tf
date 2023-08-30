@@ -8,7 +8,7 @@ module "app-alb" {
 
   vpc_id          = data.aws_vpcs.app-vpc.ids[0]
   subnets         = data.aws_subnets.public.ids
-  security_groups = [data.aws_security_group.app_lb_sg.id]
+  security_groups = [data.aws_security_group.app_lb_sg.ids[0]]
 
   target_groups = [
     {
