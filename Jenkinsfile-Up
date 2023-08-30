@@ -8,6 +8,16 @@ pipeline {
 
 
     stages {
+        stage('tf db init') {
+            steps {
+                sh "terraform -chdir=tf-db init"
+            }
+        }
+        stage('tf db apply') {
+            steps {
+                sh "terraform -chdir=tf-db apply -auto-approve"
+            }
+        }
         stage('tf init') {
             steps {
                 sh "terraform -chdir=tf-provision init"
