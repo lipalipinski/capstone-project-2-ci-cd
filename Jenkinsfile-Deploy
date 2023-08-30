@@ -8,6 +8,10 @@ pipeline {
         APP_SERVER_KEY = credentials('app-server-pk')
     }
 
+    parameters {
+      string(name: 'APP_TAG', defaultValue: '', description: 'Provide a tag of an app image to be deployed')
+    }
+
     stages {
         stage('get server ip') {
             steps {
