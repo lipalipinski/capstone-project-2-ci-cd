@@ -10,6 +10,16 @@ pipeline {
     }
 
     stages {
+        stage('tf init') {
+            steps {
+                sh "terraform -chdir=tf-provision init"
+            }
+        }
+        stage('tf destroy') {
+            steps {
+                sh "terraform -chdir=tf-provision destroy -auto-approve"
+            }
+        }
         stage('tf db init') {
             steps {
                 sh "terraform -chdir=tf-db init"
@@ -21,16 +31,6 @@ pipeline {
             }
             steps {
                 sh "terraform -chdir=tf-db destroy -auto-approve"
-            }
-        }
-        stage('tf init') {
-            steps {
-                sh "terraform -chdir=tf-provision init"
-            }
-        }
-        stage('tf destroy') {
-            steps {
-                sh "terraform -chdir=tf-provision destroy -auto-approve"
             }
         }
     }
