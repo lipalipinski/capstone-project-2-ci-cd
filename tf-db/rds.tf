@@ -18,7 +18,7 @@ module "rds" {
   allocated_storage = 20
 
   db_name  = "petclinic"
-  username = "admin"
+  username = var.db-username
   port     = 3306
 
   db_instance_tags = {

@@ -13,3 +13,8 @@ variable "gd-boundry-policy" {
   type    = string
   default = "arn:aws:iam::113304117666:policy/DefaultBoundaryPolicy"
 }
+
+variable "db-username" {
+  type = string
+  default = "admin"
+}
