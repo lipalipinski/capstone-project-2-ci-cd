@@ -14,6 +14,7 @@ apt-get install -y \
   glibc-source \
   gnupg \
   groff \
+  jq \
   less \
   software-properties-common \
   wget \
