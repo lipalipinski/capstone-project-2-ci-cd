@@ -29,7 +29,7 @@ echo -e "\nRunning $ECR_REGISTRY_URL:$APP_TAG\..."
 docker run -d \
   -p 80:8080 \
   -e SPRING_PROFILES_ACTIVE=mysql \
-  -e MYSQL_URL=jdbc:mysql://"$DB_ENDPOINT/petclinic:3306" \
+  -e MYSQL_URL="jdbc:mysql://$DB_ENDPOINT/" \
   -e MYSQL_USER=admin \
   -e MYSQL_PASS="$DB_PASS" \
   "$ECR_REGISTRY_URL:$APP_TAG"
