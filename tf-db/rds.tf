@@ -6,8 +6,8 @@ module "rds" {
 
   db_subnet_group_name          = "petclinic-jlipinski"
   vpc_security_group_ids        = [aws_security_group.db-sg.id]
-  kms_key_id                    = data.aws_kms_key.rds.id
-  master_user_secret_kms_key_id = data.aws_kms_key.rds.id
+  //kms_key_id                    = data.aws_kms_key.rds.id
+  //master_user_secret_kms_key_id = data.aws_kms_key.rds.id
 
   engine               = "mysql"
   engine_version       = "8.0"
