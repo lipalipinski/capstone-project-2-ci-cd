@@ -3,7 +3,7 @@
 APP_TAG="$1"
 ECR_REGISTRY_URL="$2"
 DB_PASS_ARN="$3"
-DB_ENDPOINT="$4"
+DB_URL="$4"
 
 # get db pass
 DB_PASS=$(aws secretsmanager get-secret-value \
@@ -28,7 +28,7 @@ echo -e "\nRunning $ECR_REGISTRY_URL:$APP_TAG\..."
 docker run -d \
   -p 80:8080 \
   -e SPRING_PROFILES_ACTIVE=mysql \
-  -e MYSQL_URL="jdbc:mysql://jlipinski-petclinic-db.cv7gyy9x6999.eu-central-1.rds.amazonaws.com/petclinic" \
+  -e MYSQL_URL="jdbc:mysql://$DB_URL/petclinic" \
   -e MYSQL_USER=admin \
   -e MYSQL_PASS="$DB_PASS" \
   "$ECR_REGISTRY_URL:$APP_TAG"
