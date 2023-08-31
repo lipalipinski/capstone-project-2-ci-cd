@@ -40,3 +40,7 @@ resource "aws_iam_role_policy_attachment" "app-server-ecr-token" {
   policy_arn = data.aws_iam_policy.get_ecr_token.arn
 }
 
+resource "aws_iam_role_policy_attachment" "secrets-manager-get-secret" {
+  role       = aws_iam_role.app-server.name
+  policy_arn = data.aws_iam_policy.secrets-manager-get-secret.arn
+}

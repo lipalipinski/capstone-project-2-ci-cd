@@ -6,7 +6,7 @@ pipeline {
     }
 
     parameters {
-        booleanParam(name: 'DESTROY_DB', defaultValue: false)
+        booleanParam(name: 'DESTROY_DB', defaultValue: false, description: 'Check out to permanently delete database resource')
     }
 
     stages {

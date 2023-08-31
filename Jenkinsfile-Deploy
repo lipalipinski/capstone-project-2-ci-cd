@@ -1,5 +1,8 @@
 def app_server_ip
 def app_alb_address
+def db_pass_arn
+def db_endpoint
+
 pipeline {
     agent {label 'ec2'}
 
@@ -34,6 +37,15 @@ pipeline {
                       script: 'terraform -chdir=tf-provision output -raw AppLBAddress'
                   ).trim()
 
+                  db_pass_arn = sh(
+                      returnStdout: true, 
+                      script: 'terraform -chdir=tf-db output -raw RdsSecretPasswordArn'
+                  ).trim()
+
+                  db_endpoint = sh(
+                      returnStdout: true, 
+                      script: 'terraform -chdir=tf-db output -raw RdsEndpoint'
+                  ).trim()
                 }
             }
         }
@@ -43,7 +55,12 @@ pipeline {
                 script {
                   sh "scp -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no tf-provision/files/deploy-app.sh ${env.APP_SERVER_KEY_USR}@${app_server_ip}:/home/ubuntu/"
                   sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'sudo chmod 755 /home/ubuntu/deploy-app.sh'"
-                  sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} '/home/ubuntu/deploy-app.sh ${params.APP_TAG} ${env.ECR_REGISTRY_URL}'"
+                  sh """
+                    ssh -i ${env.APP_SERVER_KEY} \
+                    -o StrictHostKeyChecking=no \
+                    ${env.APP_SERVER_KEY_USR}@${app_server_ip} \
+                    '/home/ubuntu/deploy-app.sh ${params.APP_TAG} ${env.ECR_REGISTRY_URL} ${db_pass_arn} ${db_endpoint}'
+                    """
                 }
               }
             }

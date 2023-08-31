@@ -15,6 +15,6 @@ variable "gd-boundry-policy" {
 }
 
 variable "db-username" {
-  type = string
+  type    = string
   default = "admin"
 }
