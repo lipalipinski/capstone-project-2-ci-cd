@@ -33,7 +33,3 @@ data "aws_security_groups" "jenkins-worker-sg" {
     values = ["jenkins-worker-sg"]
   }
 }
-
-data "aws_kms_key" "rds" {
-  key_id = "alias/aws/rds"
-}
