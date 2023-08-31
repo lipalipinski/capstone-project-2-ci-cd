@@ -5,13 +5,20 @@ pipeline {
         TF_CLI_ARGS="-no-color"
     }
 
+    parameters {
+        booleanParam(name: 'DESTROY_DB', defaultValue: false):when
+    }
+
     stages {
         stage('tf db init') {
             steps {
                 sh "terraform -chdir=tf-db init"
             }
         }
-        stage('tf db apply') {
+        stage('tf db destroy') {
+            when {
+                params.DESTROY_DB == true
+            }
             steps {
                 sh "terraform -chdir=tf-db destroy -auto-approve"
             }
