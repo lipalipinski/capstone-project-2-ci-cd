@@ -17,7 +17,7 @@ pipeline {
         }
         stage('tf db destroy') {
             when {
-                params.DESTROY_DB == true
+                expression { return params.DESTROY_DB }
             }
             steps {
                 sh "terraform -chdir=tf-db destroy -auto-approve"
