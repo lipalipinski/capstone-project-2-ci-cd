@@ -24,6 +24,7 @@ docker stop $(docker ps -aq)
 echo -e "\nPulling $ECR_REGISTRY_URL:$APP_TAG\..."
 docker pull -q "$ECR_REGISTRY_URL:$APP_TAG"
 
+echo $DB_PASS
 
 echo -e "\nRunning $ECR_REGISTRY_URL:$APP_TAG\..."
 docker run -d \
