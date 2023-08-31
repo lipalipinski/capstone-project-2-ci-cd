@@ -26,6 +26,7 @@ pipeline {
                 }
 
                   sh "terraform -chdir=tf-provision init"
+                  sh "terraform -chdir=tf-db init"
 
                   app_server_ip = sh(
                       returnStdout: true, 
