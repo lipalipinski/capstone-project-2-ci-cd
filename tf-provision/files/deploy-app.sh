@@ -12,6 +12,13 @@ DB_PASS=$(aws secretsmanager get-secret-value \
   --secret-id "$DB_PASS_ARN" \
     | jq -r ".password")
 
+# get db user
+DB_USER=$(aws secretsmanager get-secret-value \
+  --output text \
+  --query "SecretString" \
+  --secret-id "$DB_PASS_ARN" \
+    | jq -r ".username")
+
 echo -e "\nLoging to ECR..."
 aws ecr get-login-password --region eu-central-1 \
   | docker login --username AWS --password-stdin "$ECR_REGISTRY_URL"
@@ -29,6 +36,6 @@ docker run -d \
   -p 80:8080 \
   -e SPRING_PROFILES_ACTIVE=mysql \
   -e MYSQL_URL="jdbc:mysql://$DB_URL/petclinic" \
-  -e MYSQL_USER=admin \
+  -e MYSQL_USER="$DB_USER" \
   -e MYSQL_PASS="$DB_PASS" \
   "$ECR_REGISTRY_URL:$APP_TAG"
