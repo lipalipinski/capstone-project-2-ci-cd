@@ -6,9 +6,9 @@ module "rds" {
 
   db_subnet_group_name   = "petclinic-jlipinski"
   vpc_security_group_ids = [aws_security_group.db-sg.id]
+  skip_final_snapshot = true
 
   # tf can't remove an option group associated with snapshots
-  // skip_final_snapshot = true
   create_db_option_group = false
 
   engine               = "mysql"
