@@ -28,15 +28,21 @@ pipeline {
                     // CI repo URL from var set by emote Jenkinsfile Provider plugin
                     userRemoteConfigs: [[url: "${env.RJPP_SCM_URL}"]]
                 )
-                script {
-                  env.SHORT_COMMIT_HASH=sh(
+
+                // determine docker image tag
+                if (env.BRANCH_NAME == 'main') {
+                  def pom = readMavenPom()
+                  def image_tag = pom.getVersion()
+                } else {
+                  def image_tag = sh(
                         returnStdout: true, 
                         script: 'git rev-parse --short HEAD'
                     ).trim()
                 }
+
                 // set custom build name
                 script {
-                    currentBuild.displayName = "#" + currentBuild.number + "-${env.SHORT_COMMIT_HASH}"
+                    currentBuild.displayName = "#" + currentBuild.number + "-${image_tag}"
                 }
             }
         }
@@ -49,7 +55,7 @@ pipeline {
         stage('build container') {
             steps {
               echo "Building docker container..."
-              sh "docker build -q -t jlipinski-petclinic:$SHORT_COMMIT_HASH ."
+              sh "docker build -q -t jlipinski-petclinic:${image_tag} ."
             }
         }
         stage('push container') {
@@ -58,9 +64,9 @@ pipeline {
                 echo "Docker login to ECR..."
                 sh "aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $ECR_REGISTRY_URL"
                 echo "Tagging the image..."
-                sh "docker tag jlipinski-petclinic:$SHORT_COMMIT_HASH $ECR_REGISTRY_URL:$SHORT_COMMIT_HASH"
+                sh "docker tag jlipinski-petclinic:${image_tag} $ECR_REGISTRY_URL:${image_tag}"
                 echo "Pushing container to ECR..."
-                sh "docker push -q $ECR_REGISTRY_URL:$SHORT_COMMIT_HASH"
+                sh "docker push -q $ECR_REGISTRY_URL:${image_tag}"
               }
             }
         }
