@@ -4,28 +4,29 @@ pipeline {
 
     environment {
         TF_CLI_ARGS="-no-color"
+        TF_IN_AUTOMATION="true" // effective if not empt
     }
 
 
     stages {
         stage('tf db init') {
             steps {
-                sh "terraform -chdir=tf-db init"
+                sh "terraform -chdir=tf-db init -input=false"
             }
         }
         stage('tf db apply') {
             steps {
-                sh "terraform -chdir=tf-db apply -auto-approve"
+                sh "terraform -chdir=tf-db apply -auto-approve -input=false"
             }
         }
         stage('tf init') {
             steps {
-                sh "terraform -chdir=tf-provision init"
+                sh "terraform -chdir=tf-provision init -input=false"
             }
         }
         stage('tf apply') {
             steps {
-                sh "terraform -chdir=tf-provision apply -auto-approve"
+                sh "terraform -chdir=tf-provision apply -auto-approve -input=false"
             }
         }
         stage('test docker') {
