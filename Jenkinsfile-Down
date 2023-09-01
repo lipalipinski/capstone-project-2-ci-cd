@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         TF_CLI_ARGS="-no-color"
+        TF_IN_AUTOMATION="true" // effective if not empty
     }
 
     parameters {
@@ -12,17 +13,17 @@ pipeline {
     stages {
         stage('tf init') {
             steps {
-                sh "terraform -chdir=tf-provision init"
+                sh "terraform -chdir=tf-provision init -input=false"
             }
         }
         stage('tf destroy') {
             steps {
-                sh "terraform -chdir=tf-provision destroy -auto-approve"
+                sh "terraform -chdir=tf-provision destroy -auto-approve -input=false"
             }
         }
         stage('tf db init') {
             steps {
-                sh "terraform -chdir=tf-db init"
+                sh "terraform -chdir=tf-db init -input=false"
             }
         }
         stage('tf db destroy') {
@@ -30,7 +31,7 @@ pipeline {
                 expression { return params.DESTROY_DB }
             }
             steps {
-                sh "terraform -chdir=tf-db destroy -auto-approve"
+                sh "terraform -chdir=tf-db destroy -auto-approve -input=false"
             }
         }
     }
