@@ -1,3 +1,4 @@
+def image_tag
 pipeline {
     agent {label 'ec2'}
 
@@ -33,9 +34,9 @@ pipeline {
                     // determine docker image tag
                     if (env.BRANCH_NAME == 'main') {
                         def pom = readMavenPom()
-                        def image_tag = pom.getVersion()
+                        image_tag = pom.getVersion()
                     } else {
-                        def image_tag = sh(
+                        image_tag = sh(
                               returnStdout: true, 
                               script: 'git rev-parse --short HEAD'
                           ).trim()
