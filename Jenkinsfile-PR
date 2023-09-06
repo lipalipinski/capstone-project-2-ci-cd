@@ -1,4 +1,5 @@
 def image_tag
+def snapshot
 pipeline {
     agent {label 'ec2'}
 
@@ -35,6 +36,10 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         def pom = readMavenPom()
                         image_tag = pom.getVersion()
+                        snapshot = sh(
+                              returnStdout: true, 
+                              script: "if [[ ${image_tag } =~ '-SNAPSHOT' ]]; then echo 'true'; fi"
+                          ).trim()
                     } else {
                         image_tag = sh(
                               returnStdout: true, 
@@ -73,7 +78,10 @@ pipeline {
         }
         stage('tag commit') {
           when {
-            branch 'main'
+            allOf{
+              branch 'main'
+              snapshot != 'true'
+            }
           }
           steps {
             withCredentials([gitUsernamePassword(credentialsId: 'jenkins-petclinic-token-user', gitToolName: 'Default')]) {
