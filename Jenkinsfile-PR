@@ -76,8 +76,10 @@ pipeline {
             branch 'main'
           }
           steps {
-            sh "git tag ${image_tag}"
-            sh "git push origin ${image_tag}"
+            withCredentials([gitUsernamePassword(credentialsId: 'jenkins-petclinic-token-user', gitToolName: 'Default')]) {
+              sh "git tag ${image_tag}"
+              sh "git push origin ${image_tag}"
+            }
           }
         }
     }
