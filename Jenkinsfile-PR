@@ -71,5 +71,14 @@ pipeline {
               }
             }
         }
+        stage('tag commit') {
+          when {
+            branch 'main'
+          }
+          steps {
+            sh "git tag ${image_tag}"
+            sh "git push origin ${image_tag}"
+          }
+        }
     }
 }
