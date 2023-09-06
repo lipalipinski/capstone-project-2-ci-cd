@@ -1,5 +1,4 @@
 def image_tag
-def snapshot
 pipeline {
     agent {label 'ec2'}
 
@@ -36,9 +35,9 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         def pom = readMavenPom()
                         image_tag = pom.getVersion()
-                        snapshot = sh(
+                        env.snapshot = sh(
                               returnStdout: true, 
-                              script: "if [[ ${image_tag } =~ '-SNAPSHOT' ]]; then echo 'true'; fi"
+                              script: "if [[ ${image_tag } =~ '-SNAPSHOT' ]]; then echo 'true'; else echo 'false'; fi"
                           ).trim()
                     } else {
                         image_tag = sh(
@@ -78,9 +77,9 @@ pipeline {
         }
         stage('tag commit') {
           when {
-            allOf{
+            allOf {
               branch 'main'
-              snapshot != 'true'
+              environment name: 'snapshot', value: 'false'
             }
           }
           steps {
