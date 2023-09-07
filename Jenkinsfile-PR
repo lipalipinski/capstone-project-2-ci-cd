@@ -52,13 +52,21 @@ pipeline {
         }
         stage('validate version') {
           when{
-            branch 'PR-*'
+            anyOf{
+              branch 'PR-*'
+              branch 'main'
+            }
           }
           steps {
             withCredentials([gitUsernamePassword(credentialsId: 'jenkins-petclinic-token-user', gitToolName: 'Default')]) {
               sh """
                 if [[ ! \$(git tag) =~ ${pom_version} ]];
                 then
+                  if [[ ${pom_version} | grep "-SNAPSHOT" ]];
+                  then
+                    echo "SNAPSHOTS are not allowed on main branch"
+                    exit 1
+                  fi;
                   echo "Version ${pom_version} OK"
                   exit 0
                 else
