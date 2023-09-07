@@ -59,6 +59,7 @@ pipeline {
               sh """
                 if [[ ! \$(git tag) =~ ${pom_version} ]];
                 then
+                  echo "Version ${pom_version} OK"
                   exit 0
                 else
                   echo "Version ${pom_version} already in repo tags" 
