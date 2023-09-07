@@ -1,4 +1,5 @@
 def image_tag
+def pom_version
 pipeline {
     agent {label 'ec2'}
 
@@ -31,10 +32,12 @@ pipeline {
                 )
 
                 script {
+                    def pom = readMavenPom()
+                    pom_version = pom.getVersion()
+
                     // determine docker image tag
                     if (env.BRANCH_NAME == 'main') {
-                        def pom = readMavenPom()
-                        image_tag = pom.getVersion()
+                        image_tag = pom_version
                     } else {
                         image_tag = sh(
                               returnStdout: true, 
@@ -46,6 +49,16 @@ pipeline {
                     currentBuild.displayName = "#" + currentBuild.number + "-${image_tag}"
                 }
             }
+        }
+        stage('validate version') {
+          when{
+            branch 'PR-*'
+          }
+          steps {
+            withCredentials([gitUsernamePassword(credentialsId: 'jenkins-petclinic-token-user', gitToolName: 'Default')]) {
+              sh "[[ ! \$(git tag) =~ ${pom_version} ]]"
+            }
+          }
         }
         stage('test app') {
             steps {
