@@ -62,7 +62,7 @@ pipeline {
               sh """
                 if [[ ! \$(git tag) =~ ${pom_version} ]];
                 then
-                  if [[ ${pom_version} | grep "-SNAPSHOT" ]];
+                  if [[ ${pom_version} =~ "-SNAPSHOT" ]];
                   then
                     echo "SNAPSHOTS are not allowed on main branch"
                     exit 1
