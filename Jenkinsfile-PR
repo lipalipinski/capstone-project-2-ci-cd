@@ -56,7 +56,15 @@ pipeline {
           }
           steps {
             withCredentials([gitUsernamePassword(credentialsId: 'jenkins-petclinic-token-user', gitToolName: 'Default')]) {
-              sh "[[ ! \$(git tag) =~ ${pom_version} ]]"
+              sh """
+                if [[ ! \$(git tag) =~ ${pom_version} ]];
+                then
+                  exit 0
+                else
+                  echo "Version ${pom_version} already in repo tags" 
+                  exit 1
+                fi;
+                """
             }
           }
         }
