@@ -16,14 +16,14 @@ do
       --db-instance-identifier "$rds_id" --output text --query='DBInstances[*].DBInstanceStatus')
     if [[ "$resp" == "$status" ]]
     then
-      echo "RDS state: $status"
+      echo "RDS state: $resp"
       exit 0
     fi
   done
-  echo "RDS state: $status - waiting... $(( $i + $interval ))s"
+  echo "RDS state: $resp - waiting... $(( $i + $interval ))s"
   sleep $interval
 done
 
-echo "RDS state: $status"
+echo "RDS state: $resp"
 echo "Timeout!"
 exit 62
