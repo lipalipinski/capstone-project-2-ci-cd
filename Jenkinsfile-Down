@@ -36,8 +36,8 @@ pipeline {
                     def instance_id = sh(
                       returnStdout: true, 
                       script: 'terraform -chdir=tf-db output -raw RdsInstanceIdentifier'
-                  ).trim()
-                sh """aws rds stop-db-instance \
+                    ).trim()
+                    sh """aws rds stop-db-instance \
                         --db-instance-identifier ${instance_id}"""
                 }
             }
