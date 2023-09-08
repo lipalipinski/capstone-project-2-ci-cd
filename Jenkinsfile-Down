@@ -8,6 +8,7 @@ pipeline {
 
     parameters {
         booleanParam(name: 'DESTROY_DB', defaultValue: false, description: 'Check out to permanently delete database resource')
+        booleanParam(name: 'STOP_DB', defaultValue: true, description: 'Check out to stop RDS instance')
     }
 
     stages {
@@ -24,6 +25,21 @@ pipeline {
         stage('tf db init') {
             steps {
                 sh "terraform -chdir=tf-db init -input=false"
+            }
+        }
+        stage('db stop') {
+            when {
+                expression { return params.STOP_DB }
+            }
+            steps {
+                script {
+                    def instance_id = sh(
+                      returnStdout: true, 
+                      script: 'terraform -chdir=tf-db output -raw RdsInstanceIdentifier'
+                  ).trim()
+                sh """aws rds stop-db-instance \
+                        --db-instance-identifier ${instance_id}"""
+                }
             }
         }
         stage('tf db destroy') {
