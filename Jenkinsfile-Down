@@ -40,6 +40,7 @@ pipeline {
                     if (instance_id) {
                         sh """aws rds stop-db-instance \
                             --db-instance-identifier ${instance_id}"""
+                        sh """./tf-provision/files/wait-for-rds.sh ${instance_id} stopped"""
                     }
                 }
             }
