@@ -5,7 +5,7 @@ module "rds" {
   identifier = "jlipinski-petclinic-db"
 
   db_subnet_group_name   = "petclinic-jlipinski"
-  vpc_security_group_ids = [aws_security_group.db-sg.id]
+  vpc_security_group_ids = [data.aws_security_groups.db-sg.ids[0]]
   skip_final_snapshot = true
 
   # tf can't remove an option group associated with snapshots
