@@ -5,3 +5,7 @@ output "RdsSecretPasswordArn" {
 output "RdsEndpoint" {
   value = module.rds.db_instance_address
 }
+
+output "RdsInstanceIdentifier" {
+  value = module.rds.db_instance_identifier
+}
