@@ -29,7 +29,7 @@ data "aws_subnets" "public" {
 
 data "aws_security_groups" "db-sg" {
   filter {
-    name   = "db-sg"
-    values = ["jenkins-worker-sg"]
+    name   = "group-name"
+    values = ["db-sg"]
   }
 }
