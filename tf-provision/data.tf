@@ -1,4 +1,17 @@
 
+data "aws_caller_identity" "current" {}
+
+data "aws_ami_ids" "app-server" {
+  owners = [data.aws_caller_identity.current.account_id]
+
+  sort_ascending = true
+
+  filter {
+    name   = "name"
+    values = ["app-server-jlipinski-*"]
+  }
+}
+
 data "aws_iam_instance_profile" "app-server-profile" {
   name = "app-server"
 }
