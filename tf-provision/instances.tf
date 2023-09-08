@@ -7,7 +7,7 @@ module "app-server-1" {
   iam_instance_profile = data.aws_iam_instance_profile.app-server-profile.name
 
   instance_type          = "t3.small"
-  ami                    = reverse(data.aws_ami_ids.jenkins-controller.ids)[0]
+  ami                    = reverse(data.aws_ami_ids.app-server.ids)[0]
   monitoring             = true
   subnet_id              = data.aws_subnets.private.ids[0]
   vpc_security_group_ids = [data.aws_security_groups.app-server-sg.ids[0]]
