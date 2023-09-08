@@ -1,9 +1,6 @@
-data "aws_iam_policy" "get_ecr_token" {
-  name = "get_ecr_token"
-}
 
-data "aws_iam_policy" "secrets-manager-get-secret" {
-  name = "secrets-manager-get-secret"
+data "aws_iam_instance_profile" "app-server-profile" {
+  name = "app-server"
 }
 
 data "aws_security_groups" "app-lb-sg" {

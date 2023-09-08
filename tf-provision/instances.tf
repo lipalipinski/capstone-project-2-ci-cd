@@ -4,7 +4,7 @@ module "app-server-1" {
 
   name                 = "app_server_1"
   key_name             = "app-server-kp"
-  iam_instance_profile = aws_iam_instance_profile.app-server.name
+  iam_instance_profile = data.aws_iam_instance_profile.app-server.name
 
   instance_type          = "t3.small"
   ami                    = var.server-ami
