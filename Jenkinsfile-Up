@@ -24,6 +24,7 @@ pipeline {
                     ).trim()
                     sh """aws rds start-db-instance \
                         --db-instance-identifier ${instance_id}"""
+                    sh """./tf-provision/files/wait-for-rds.sh ${instance_id} available"""
                 }
             }
         }
