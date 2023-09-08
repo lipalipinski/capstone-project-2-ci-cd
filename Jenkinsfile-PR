@@ -66,9 +66,9 @@ pipeline {
                   exit 1
                 fi;
 
-                if [[ ${pom_version} =~ "-SNAPSHOT" ]];
+                if [[ ${pom_version} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]];
                 then
-                  echo "SNAPSHOTS are not allowed on main branch"
+                  echo "Version ${pom_version} doesn't match the X.X.X pattern"
                   exit 1
                 fi;
 
