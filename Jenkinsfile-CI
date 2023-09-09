@@ -1,3 +1,9 @@
+/*
+Continous Integration pipeline triggered by GitHub webhook.
+Tests app on push, builds a container and stores container image in ECR.
+Image tag is short commit hash, or app version (when building a commit to main branch)
+Validates app version on pull request. Tags a commit on main branch with application version.
+*/
 def image_tag
 def pom_version
 pipeline {
