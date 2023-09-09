@@ -32,15 +32,17 @@ pipeline {
                       script: 'terraform -chdir=tf-db output -raw RdsInstanceIdentifier'
                     ).trim()
                     sh """
-                        if [[ \$(aws rds describe-db-instances \
-                                    --db-instance-identifier "${instance_id}" \
-                                    --output text --query='DBInstances[*].DBInstanceStatus') == "stopped" ]] then;
+                        # if rds is stopped
+                        rds_state=\$(aws rds describe-db-instances --db-instance-identifier "${instance_id}" \
+                            --output text --query='DBInstances[*].DBInstanceStatus')
+                        if [[ "\$rds_state" == "stopped" ]]; 
+                        then
+                            # start rds instance
                             aws rds start-db-instance \
                                 --db-instance-identifier ${instance_id}
+                            # wait for rds to become available
+                            ./tf-provision/files/wait-for-rds.sh ${instance_id} available
                         fi;"""
-                    
-                    // wait for RDS state = available
-                    sh """./tf-provision/files/wait-for-rds.sh ${instance_id} available"""
                 }
             }
         }
