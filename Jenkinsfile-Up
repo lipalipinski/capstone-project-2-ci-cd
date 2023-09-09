@@ -37,7 +37,7 @@ pipeline {
                             --output text --query='DBInstances[*].DBInstanceStatus')
                         if [[ "\$rds_state" == "stopped" ]]; 
                         then
-                            # start rds instance
+                            echo "Start rds instance..."
                             aws rds start-db-instance \
                                 --db-instance-identifier ${instance_id}
                             # wait for rds to become available
