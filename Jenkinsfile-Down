@@ -1,3 +1,7 @@
+/*
+Destroys application ALB and EC2. Optionally it could stop and/or destrooy application DB.
+After stopping a DB waits for its state to become "stopped".
+*/
 pipeline {
     agent {label 'ec2'}
 
@@ -40,6 +44,7 @@ pipeline {
                     if (instance_id) {
                         sh """aws rds stop-db-instance \
                             --db-instance-identifier ${instance_id}"""
+                        // wait for DB state = stopped
                         sh """./tf-provision/files/wait-for-rds.sh ${instance_id} stopped"""
                     }
                 }

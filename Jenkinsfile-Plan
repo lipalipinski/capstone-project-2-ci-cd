@@ -1,3 +1,6 @@
+/*
+Allows to verify execution plans before provisioning application infrastructure
+*/
 pipeline {
     agent {label 'ec2'}
 

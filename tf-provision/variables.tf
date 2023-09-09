@@ -13,8 +13,3 @@ variable "gd-boundry-policy" {
   type    = string
   default = "arn:aws:iam::113304117666:policy/DefaultBoundaryPolicy"
 }
-
-variable "server-ami" {
-  type    = string
-  default = "ami-04e601abe3e1a910f"
-}

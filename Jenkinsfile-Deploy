@@ -1,3 +1,11 @@
+/*
+Deploy an application container with a given tag.
+Takes a server IP from terraform output.
+Takes SSH key from credentials (provided with Secrets Manager plugin)
+Takes ECR_REGISTRY_URL from AWS Parameter Store.
+Tests the application on ALB address.
+*/
+
 def app_server_ip
 def app_alb_address
 def db_pass_arn
@@ -28,6 +36,7 @@ pipeline {
                   sh "terraform -chdir=tf-provision init"
                   sh "terraform -chdir=tf-db init"
 
+                  // get parameters from tf output
                   app_server_ip = sh(
                       returnStdout: true, 
                       script: 'terraform -chdir=tf-provision output -raw AppServerIp'
@@ -52,10 +61,13 @@ pipeline {
         }
         stage('run app on server') {
             steps {
+              // take ECR URL from Parameter Store
               withAWSParameterStore(credentialsId: '', naming: 'basename', path: '/jlipinski', recursive: true, regionName: 'eu-central-1') {
                 script {
+                  // copy deployment script to app server and make it executable
                   sh "scp -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no tf-provision/files/deploy-app.sh ${env.APP_SERVER_KEY_USR}@${app_server_ip}:/home/ubuntu/"
                   sh "ssh -i ${env.APP_SERVER_KEY} -o StrictHostKeyChecking=no ${env.APP_SERVER_KEY_USR}@${app_server_ip} 'sudo chmod 755 /home/ubuntu/deploy-app.sh'"
+                  // run deployment script on app server with parameters
                   sh """
                     ssh -i ${env.APP_SERVER_KEY} \
                     -o StrictHostKeyChecking=no \

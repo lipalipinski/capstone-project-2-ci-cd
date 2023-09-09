@@ -52,7 +52,6 @@ data "aws_subnets" "public" {
   }
 }
 
-
 data "aws_vpcs" "app-vpc" {
   tags = {
     Name = "petclinic-jlipinski"

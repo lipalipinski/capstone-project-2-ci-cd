@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# check if server responds on any of url passed in args
+# check if server responds with 200 on any of url passed in args
 
 interval=5
 tout=300

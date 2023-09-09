@@ -1,3 +1,10 @@
+/*
+Provisions an RDS DB instance, ALB and an EC2 instance for a Petclinic application.
+If the RDS already exiists, but is not available (i.e. stopped) it tries to start it 
+and wait for it to become available. After provisioning an application EC2 instance it runs Apache2 
+container and exposes it on :8080 to tests a connection and validate server configuration.
+*/
+
 def app_server_ip
 pipeline {
     agent {label 'ec2'}
@@ -17,6 +24,8 @@ pipeline {
         stage('tf db apply') {
             steps {
                 sh "terraform -chdir=tf-db apply -auto-approve -input=false"
+
+                // start RDS instance
                 script {
                     def instance_id = sh(
                       returnStdout: true, 
@@ -24,6 +33,8 @@ pipeline {
                     ).trim()
                     sh """aws rds start-db-instance \
                         --db-instance-identifier ${instance_id}"""
+                    
+                    // wait for RDS state = available
                     sh """./tf-provision/files/wait-for-rds.sh ${instance_id} available"""
                 }
             }
@@ -45,6 +56,8 @@ pipeline {
                     returnStdout: true, 
                     script: 'terraform -chdir=tf-provision output -raw AppServerIp'
                 ).trim()
+
+                // check server connectivity
                 sh "./tf-provision/files/check-server.sh ${app_server_ip}:80 ${app_server_ip}:8080"
                 }
             }

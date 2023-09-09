@@ -4,6 +4,8 @@ module "rds" {
 
   identifier = "jlipinski-petclinic-db"
 
+  # DB credentials managed by RDS and stored in Secrets Manager
+
   db_subnet_group_name   = "petclinic-jlipinski"
   vpc_security_group_ids = [data.aws_security_groups.db-sg.ids[0]]
   skip_final_snapshot = true
