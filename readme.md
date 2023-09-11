@@ -8,6 +8,8 @@ Whole project consists of three repositories:
 
 This repository contains Jenkinsfiles, Terraform plan and other resources for jobs that provision application infrastructure, build app container image and deploy it on server.
 
+![CI schema](images/Petclinic-CI.svg)
+
 ## Jobs
 
 ### Petclinic-Provision-Plan
@@ -35,4 +37,3 @@ Takes a server IP from terraform output.
 Takes SSH key from credentials (provided with Secrets Manager plugin)
 Takes ECR_REGISTRY_URL from AWS Parameter Store.
 Tests the application on ALB address.
-
